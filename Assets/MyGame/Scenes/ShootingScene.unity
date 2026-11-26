@@ -752,10 +752,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a34cbe36b907671418aeb6cb6c5d45b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  targets:
-  - {fileID: 4591863265193547165, guid: 8231af953bb0e89419196a7873c28127, type: 3}
-  - {fileID: 4591863265193547165, guid: 1e5d62fc515663250adddccc6c992628, type: 3}
-  - {fileID: 4591863265193547165, guid: 750b2ca785c2af1d87eb5de22e95ff41, type: 3}
+  snowman: {fileID: 4591863265193547165, guid: 8231af953bb0e89419196a7873c28127, type: 3}
+  gift: {fileID: 4591863265193547165, guid: 1e5d62fc515663250adddccc6c992628, type: 3}
+  iceBlock: {fileID: 4591863265193547165, guid: 750b2ca785c2af1d87eb5de22e95ff41, type: 3}
   parentOfTargets: {fileID: 958871934}
   winSprite: {fileID: 73667832}
   scoreText: {fileID: 821733796}

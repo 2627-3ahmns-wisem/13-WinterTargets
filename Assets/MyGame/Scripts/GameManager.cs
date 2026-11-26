@@ -3,11 +3,14 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject[] targets;
+    public GameObject snowman;
+    public GameObject gift;
+    public GameObject iceBlock;
     public GameObject parentOfTargets;
     public GameObject winSprite;
     public Text scoreText;
-    
+    public GameObject randomTarget;
+
     public int winScore = 100;
 
     private int score = 0;
@@ -43,8 +46,25 @@ public class GameManager : MonoBehaviour
 
         Vector2 random2DPosition = new Vector2(randomX, randomY);
 
-        //choose a random prefab from the array (Snowman, Gift or IceBlock)
-        GameObject randomTarget = targets[Random.Range(0, targets.Length)];
+        //choose the target type with a random number from 0 to 99
+        //  0 - 59 -> Snowman  (60 %)
+        // 60 - 89 -> IceBlock (30 %)
+        // 90 - 99 -> Gift     (10 %)
+        int chance = Random.Range(0, 100);
+        
+
+        if (chance < 60)
+        {
+            randomTarget = snowman;
+        }
+        else if (chance < 90)
+        {
+            randomTarget = iceBlock;
+        }
+        else
+        {
+            randomTarget = gift;
+        }
 
         GameObject newTarget = Instantiate(randomTarget, parentOfTargets.transform);
         newTarget.transform.localPosition = random2DPosition;
