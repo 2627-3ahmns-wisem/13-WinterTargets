@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using UnityEditor;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,11 +12,12 @@ public class GameManager : MonoBehaviour
     public GameObject winSprite;
     public Text scoreText;
     public GameObject randomTarget;
-
-    public int winScore = 100;
-
+    public Text timerText;
+    public float timeLeft = 60f;
+    public bool gameRunning = true;
     private int score = 0;
-    private bool win = false;
+    public Text scorefinished;
+    
 
     private void Start()
     {
@@ -23,10 +26,22 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        //if the player reaches winScore points, the player has won and the Spawn method will not called further. 
-        if(win)
+        //countdown: only while the round is running
+        if (gameRunning)
         {
-            CancelInvoke("Spawn");
+            timeLeft -= Time.deltaTime;
+            timerText.text = "Zeit: " + (int)timeLeft;
+
+            if (timeLeft <= 0)
+            {
+                EndGame();
+            }
+        }
+
+        //after the round: press R to start a new round (reloading the scene resets time and score)
+        if (!gameRunning && Input.GetKeyDown(KeyCode.R))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         //every shoot (clicking left mouse button) produce a shooting sound.
@@ -71,17 +86,35 @@ public class GameManager : MonoBehaviour
     }
 
     //is called in the class Target, points can also be negative
+    //the old win condition (10 hits / winScore) was replaced by the 60 second time limit
     public void AddScore(int points)
     {
+        //after the end of the round no more points are counted
+        if (!gameRunning)
+        {
+            return;
+        }
+
         score += points;
         print(score);
 
         scoreText.text = score.ToString();
+    }
 
-        if (score >= winScore)
+    //is called when the time is over
+    private void EndGame()
+    {
+        gameRunning = false;
+        timeLeft = 0;
+        CancelInvoke("Spawn");
+
+        //remove all targets 
+        foreach (Transform child in parentOfTargets.transform)
         {
-            win = true;
-            winSprite.SetActive(true);
+            Destroy(child.gameObject);
         }
+        winSprite.SetActive(true);
+        scorefinished.text = "Dein Score ist: " + score;
+        
     }
 }
